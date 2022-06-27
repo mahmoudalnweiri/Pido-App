@@ -46,15 +46,95 @@ class AddressesScreen extends StatelessWidget {
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                itemCount: 2,
+                padding: const EdgeInsets.only(top: 25.0, bottom: 10.0),
+                itemCount: 5,
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 15,
                 ),
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {},
-                    onLongPress: () {},
+                    onLongPress: () {
+                      showModalBottomSheet(
+                        context: context,
+                        constraints:
+                        const BoxConstraints(maxHeight: 290, minWidth: double.infinity),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(15.0),
+                          ),
+                        ),
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, right: 20, bottom: 20, left: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 6,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Text(
+                                  'Default Address',
+                                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                                ),
+                                const Divider(
+                                  height: 40,
+                                ),
+
+                                const Text(
+                                  'Sure you want to make it the default address?',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 17, height: 1.4, fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 45,
+                                  child: TextButton(
+                                    onPressed: () {
+
+                                    },
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all(const Color.fromRGBO(244, 236, 207, 1)),
+                                        foregroundColor:
+                                        MaterialStateProperty.all(Colors.black)),
+                                    child: const Text('Confirm', style: TextStyle(fontSize: 17),),
+                                  ),
+                                ),
+                                const SizedBox(height: 10,),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 45,
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ButtonStyle(
+                                      foregroundColor:
+                                      MaterialStateProperty.all(Colors.black),
+                                    ),
+                                    child: const Text('Cancel', style: TextStyle(fontSize: 17),),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     hoverColor: Colors.transparent,
