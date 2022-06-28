@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:intl/intl.dart';
+import 'package:pido_app/models/product_model.dart';
 
 import '../../layout/cubit/pido_cubit.dart';
 import '../../modules/categories/categories_screen.dart';
@@ -8,18 +9,13 @@ import '../../modules/product_details.dart';
 
 InkWell buildProductItem({
   required BuildContext context,
+  required ProductModel model,
   required PidoCubit cubit,
   required int index,
+  void Function()? onTap,
 }) {
   return InkWell(
-    onTap: () {
-      cubit.getSimilarProducts(subId: cubit.newArrivalProducts[index].subcategoryId!, pId: cubit.newArrivalProducts[index].id!);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  ProductDetails(model: cubit.newArrivalProducts[index])));
-    },
+    onTap: onTap,
     borderRadius: BorderRadius.circular(12.0),
     child: Container(
       padding: const EdgeInsets.all(10.0),
@@ -75,7 +71,7 @@ InkWell buildProductItem({
                   ),
                 ),
               ),
-              if (cubit.newArrivalProducts[index].offerprice! > 0)
+              if (model.offerprice! > 0)
                 Positioned(
                   top: 3,
                   left: 3,
@@ -97,7 +93,7 @@ InkWell buildProductItem({
                                   radius: 3,
                                 ),
                                 Text(
-                                  '${cubit.discountPercentage(price: cubit.newArrivalProducts[index].price!, priceOffer: cubit.newArrivalProducts[index].offerprice!)}%',
+                                  '${cubit.discountPercentage(price: model.price!, priceOffer: model.offerprice!)}%',
                                   style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 9,
@@ -121,36 +117,36 @@ InkWell buildProductItem({
             height: 10,
           ),
           Text(
-            cubit.newArrivalProducts[index].product_translate!.name!,
+            model.product_translate!.name!,
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
           ),
           SizedBox(
-            height: cubit.newArrivalProducts[index].offerprice == 0 ? 10 : 4.5,
+            height: model.offerprice == 0 ? 10 : 4.5,
           ),
-          if (cubit.newArrivalProducts[index].offerprice == 0)
+          if (model.offerprice == 0)
             Text(
-              '${cubit.newArrivalProducts[index].price!.toDouble()} KWD',
+              '${model.price!.toDouble()} KWD',
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
             ),
-          if (cubit.newArrivalProducts[index].offerprice != 0)
+          if (model.offerprice != 0)
             Column(
               children: [
                 Text(
-                  '${cubit.newArrivalProducts[index].price!.toDouble()} KWD',
+                  '${model.price!.toDouble()} KWD',
                   style: Theme.of(context)
                       .textTheme
                       .caption!
                       .copyWith(decoration: TextDecoration.lineThrough),
                 ),
                 Text(
-                  '${cubit.newArrivalProducts[index].offerprice!.toDouble()} KWD',
+                  '${model.offerprice!.toDouble()} KWD',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 19),
                 ),
               ],
             ),
           SizedBox(
-            height: cubit.newArrivalProducts[index].offerprice == 0 ? 10 : 2,
+            height: model.offerprice == 0 ? 10 : 2,
           ),
           ElevatedButton(
             onPressed: () {},
@@ -189,8 +185,14 @@ InkWell buildCategoryCard({
       }else if(index == 3){
         cubit.getGamingProducts();
         Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryScreen(title: toBeginningOfSentenceCase(title))));
-      }else{
+      }else if(index == 4){
         cubit.getDevicesProducts();
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryScreen(title: toBeginningOfSentenceCase(title))));
+      }else if(index == 5){
+        cubit.getPetsProducts();
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryScreen(title: toBeginningOfSentenceCase(title))));
+      }else{
+        cubit.getCampingProducts();
         Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryScreen(title: toBeginningOfSentenceCase(title))));
       }
     },
@@ -217,7 +219,7 @@ InkWell buildCategoryCard({
                 ? 20
                 : index == 2
                     ? 5
-                    : index == 1 || index == 4 ? 10 : 15,
+                    : index == 1 || index == 4 ? 10 : 14,
           ),
           Image.asset(imageUrl),
           const Spacer(),

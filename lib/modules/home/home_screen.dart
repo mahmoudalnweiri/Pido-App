@@ -6,6 +6,7 @@ import 'package:pido_app/layout/cubit/pido_states.dart';
 
 import '../../shared/components/widgets.dart';
 import '../offers/offers_screen.dart';
+import '../product_details.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = PidoCubit.get(context);
         return cubit.categories.isNotEmpty &&
-                cubit.newArrivalProducts.isNotEmpty &&
+                cubit.categoryProducts['All']!.isNotEmpty &&
                 cubit.offers.isNotEmpty
             ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -43,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                                 'https://photo-cdn2.icons8.com/sQelET_DxAyxnfwZ92m7ON0mnN2a52A3rvGaDGWwoos/rs:fit:288:192/czM6Ly9pY29uczgu/bW9vc2UtcHJvZC5h/c3NldHMvYXNzZXRz/L3NhdGEvb3JpZ2lu/YWwvNDYwL2IwM2I3/NzJmLTAxOWEtNDc1/Yi05OGQ1LTBlOTA1/NmZjOTc1My5qcGc.jpg'),
                       ],
                       options: CarouselOptions(
-                        height: 170.0,
+                        height: 160.0,
                         initialPage: 0,
                         enlargeCenterPage: true,
                         viewportFraction: 0.8,
@@ -56,14 +57,61 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                       ),
                     ),
-
-                    const Divider(height: 30,),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.center,
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            )
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.search_outlined,
+                                color: Color.fromRGBO(233, 213, 232, 1),
+                                size: 32,
+                              ),
+                              const SizedBox(width: 20.0),
+                              Text(
+                                'Find Your Product',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(fontSize: 14),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     //buildSectionTitle(title: 'Offers'),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 16.0), child: Text(
-                      'Offers',
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 23, fontWeight: FontWeight.w600),
-                    ),),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Offers',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 23,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -114,13 +162,20 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    const Divider(height: 30,),
+                    const Divider(
+                      height: 30,
+                    ),
                     //buildSectionTitle(title: 'Categories'),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 16.0), child: Text(
-                      'Categories',
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 23, fontWeight: FontWeight.w600),
-                    ),),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Categories',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 23,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -154,13 +209,20 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const Divider(height: 30,),
+                    const Divider(
+                      height: 30,
+                    ),
                     //buildSectionTitle(title: 'New Arrival'),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 16.0), child: Text(
-                      'New Arrival',
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 23, fontWeight: FontWeight.w600),
-                    ),),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'All Products',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 23,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -175,10 +237,26 @@ class HomeScreen extends StatelessWidget {
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,
                       ),
-                      itemCount: cubit.newArrivalProducts.length,
+                      itemCount: cubit.categoryProducts['All']!.length,
                       itemBuilder: (context, index) {
                         return buildProductItem(
-                            context: context, cubit: cubit, index: index);
+                          context: context,
+                          model: cubit.categoryProducts['All']![index],
+                          cubit: cubit,
+                          index: index,
+                          onTap: () {
+                            cubit.getSimilarProducts(
+                                subId: cubit.categoryProducts['All']![index]
+                                    .subcategoryId!,
+                                pId: cubit.categoryProducts['All']![index].id!);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => ProductDetails(
+                                        model: cubit
+                                            .categoryProducts['All']![index])));
+                          },
+                        );
                       },
                     ),
                   ],

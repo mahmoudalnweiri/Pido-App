@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => PidoCubit()..getCategories()..getNewArrival()..getOffers(),
+          create: (context) => PidoCubit()..getCategories()..getAllProducts()..getOffers(),
         ),
       ],
       child: MaterialApp(

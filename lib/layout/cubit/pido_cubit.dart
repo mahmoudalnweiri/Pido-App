@@ -20,9 +20,6 @@ class PidoCubit extends Cubit<PidoStates> {
     ).then((value) {
       categories = [];
       for (var item in value.data) {
-        if(categories.length == 5){
-          break;
-        }
         categories.add(CategoryModel.fromJson(item));
       }
       emit(SuccessGetCategoriesState());
@@ -39,6 +36,7 @@ class PidoCubit extends Cubit<PidoStates> {
     DioHelper.getData(
       url: NEWARRIVAL,
     ).then((value) {
+      newArrivalProducts = [];
       for (var item in value.data) {
         newArrivalProducts.add(ProductModel.fromJson(item));
       }
@@ -81,12 +79,29 @@ class PidoCubit extends Cubit<PidoStates> {
   }
 
   Map<String, List<ProductModel>> categoryProducts = {
+    'All': [],
     'Men': [],
     'Women': [],
     'Gadgets': [],
     'Gaming': [],
     'Devices': [],
+    'Pets': [],
+    'Camping': [],
   };
+
+  void getAllProducts() {
+    emit(LoadingGetAllProductsState());
+    DioHelper.getData(url: PRODUCTS, lang: 'en', type: 'all').then((value) {
+      categoryProducts['All'] = [];
+      for (var item in value.data) {
+        categoryProducts['All']!.add(ProductModel.fromJson(item));
+      }
+      emit(SuccessGetAllProductsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetAllProductsState());
+    });
+  }
 
   void getMenProducts() {
     emit(LoadingGetMenProductsState());
@@ -155,6 +170,34 @@ class PidoCubit extends Cubit<PidoStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ErrorGetDevicesProductsState());
+    });
+  }
+
+  void getPetsProducts() {
+    emit(LoadingGetPetsProductsState());
+    DioHelper.getData(url: PRODUCTS, lang: 'en', type: 'pets').then((value) {
+      categoryProducts['Pets'] = [];
+      for (var item in value.data) {
+        categoryProducts['Pets']!.add(ProductModel.fromJson(item));
+      }
+      emit(SuccessGetPetsProductsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetPetsProductsState());
+    });
+  }
+
+  void getCampingProducts() {
+    emit(LoadingGetCampingProductsState());
+    DioHelper.getData(url: PRODUCTS, lang: 'en', type: 'camping').then((value) {
+      categoryProducts['Camping'] = [];
+      for (var item in value.data) {
+        categoryProducts['Camping']!.add(ProductModel.fromJson(item));
+      }
+      emit(SuccessGetCampingProductsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetCampingProductsState());
     });
   }
 

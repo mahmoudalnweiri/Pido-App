@@ -24,6 +24,12 @@ class ErrorGetOffersState extends PidoStates{}
 
 class ChangeFilterState extends PidoStates{}
 
+class LoadingGetAllProductsState extends PidoStates{}
+
+class SuccessGetAllProductsState extends PidoStates{}
+
+class ErrorGetAllProductsState extends PidoStates{}
+
 class LoadingGetMenProductsState extends PidoStates{}
 
 class SuccessGetMenProductsState extends PidoStates{}
@@ -53,6 +59,18 @@ class LoadingGetDevicesProductsState extends PidoStates{}
 class SuccessGetDevicesProductsState extends PidoStates{}
 
 class ErrorGetDevicesProductsState extends PidoStates{}
+
+class LoadingGetPetsProductsState extends PidoStates{}
+
+class SuccessGetPetsProductsState extends PidoStates{}
+
+class ErrorGetPetsProductsState extends PidoStates{}
+
+class LoadingGetCampingProductsState extends PidoStates{}
+
+class SuccessGetCampingProductsState extends PidoStates{}
+
+class ErrorGetCampingProductsState extends PidoStates{}
 
 class LoadingGetSimilarProductsState extends PidoStates{}
 

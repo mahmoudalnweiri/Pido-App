@@ -6,6 +6,7 @@ import 'package:pido_app/layout/cubit/pido_cubit.dart';
 import 'package:pido_app/layout/cubit/pido_states.dart';
 import 'package:pido_app/modules/favorites/favorites_screen.dart';
 import 'package:pido_app/modules/login/login_screen.dart';
+import 'package:pido_app/modules/new_arrival/new_arrival_screen.dart';
 import 'package:pido_app/modules/offers/offers_screen.dart';
 import 'package:pido_app/modules/orders/my_orders_screen.dart';
 
@@ -201,6 +202,41 @@ class PidoLayout extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(
+                      Icons.discount_outlined,
+                      color: Colors.black,
+                      size: 27,
+                    ),
+                    title: const Text(
+                      'Offers',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const OffersScreen()));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.new_releases_outlined,
+                      color: Colors.black,
+                      size: 27,
+                    ),
+                    title: const Text(
+                      'New Arrival',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                    onTap: () {
+                      cubit.getNewArrival();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const NewArrivalScreen()));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
                       Icons.location_on_outlined,
                       color: Colors.black,
                       size: 27,
@@ -248,23 +284,6 @@ class PidoLayout extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (_) => const FavoritesScreen()));
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.discount_outlined,
-                      color: Colors.black,
-                      size: 27,
-                    ),
-                    title: const Text(
-                      'Offers',
-                      style: TextStyle(fontSize: 19),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const OffersScreen()));
                     },
                   ),
                   ListTile(
