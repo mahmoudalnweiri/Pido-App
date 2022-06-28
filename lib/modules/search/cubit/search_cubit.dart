@@ -14,7 +14,7 @@ class SearchCubit extends Cubit<SearchStates> {
 
   List<String> recent = CacheHelper.getListString(key: 'recent') ?? [];
 
-  void removeSuggestion(int index){
+  void removeSuggestion(int index) {
     recent.removeAt(index);
     CacheHelper.setListString(key: 'recent', value: recent);
     emit(RemoveSuggestionState());
@@ -52,7 +52,7 @@ class SearchCubit extends Cubit<SearchStates> {
       },
     ).then((value) {
       searchResults = [];
-      for(var item in value.data){
+      for (var item in value.data) {
         searchResults.add(ProductModel.fromJson(item));
       }
       emit(SuccessGetResultsSearchState());
@@ -60,5 +60,15 @@ class SearchCubit extends Cubit<SearchStates> {
       print(error.toString());
       emit(ErrorGetResultsSearchState());
     });
+  }
+
+  void clearSearch() {
+    searchSuggestions = [];
+    searchResults = [];
+    emit(ClearSearchState());
+  }
+
+  void selectKeywordOfSearch() {
+    emit(SelectKeywordOfSearchState());
   }
 }

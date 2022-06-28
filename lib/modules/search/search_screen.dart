@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pido_app/layout/cubit/pido_cubit.dart';
+import 'package:pido_app/modules/product_details.dart';
 import 'package:pido_app/modules/search/cubit/search_cubit.dart';
 import 'package:pido_app/modules/search/cubit/search_states.dart';
 import 'package:pido_app/shared/network/local/cache_helper.dart';
@@ -13,7 +15,20 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController searchController = TextEditingController();
+  late TextEditingController searchController;
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,36 +39,66 @@ class _SearchScreenState extends State<SearchScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Container(
-              height: 36,
+              height: 35,
               width: double.maxFinite,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
                 color: Colors.black12,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: TextField(
                   controller: searchController,
+                  focusNode: focusNode,
                   cursorWidth: 1,
                   cursorColor: Colors.black,
                   onSubmitted: (value) {
-                    cubit.getSearchResults(keyWord: value);
-                    cubit.recent.add(value);
-                    CacheHelper.setListString(
-                        key: 'recent', value: cubit.recent);
+                    if (!RegExp(r'^[ ]*$').hasMatch(value)) {
+                      cubit.searchSuggestions = [];
+                      cubit.getSearchResults(keyWord: value);
+                      cubit.recent.remove(value);
+                      cubit.recent.add(value);
+                      CacheHelper.setListString(
+                        key: 'recent',
+                        value: cubit.recent,
+                      );
+                    }
                   },
                   onChanged: (value) {
-                    cubit.getSearchSuggestions(keyWord: value);
+                    if (!RegExp(r'^[ ]*$').hasMatch(value)) {
+                      cubit.searchResults = [];
+                      cubit.getSearchSuggestions(keyWord: value);
+                    }
+                    if (value == '') {
+                      cubit.clearSearch();
+                    }
                   },
                   style: const TextStyle(color: Colors.black),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Search',
                     border: InputBorder.none,
+                    contentPadding: searchController.text.isEmpty
+                        ? const EdgeInsets.fromLTRB(0, 12, 0, 12)
+                        : EdgeInsets.zero,
+                    suffixIcon: searchController.text.isNotEmpty
+                        ? IconButton(
+                            splashRadius: 15,
+                            onPressed: () {
+                              searchController.clear();
+                              cubit.clearSearch();
+                            },
+                            icon: const Icon(
+                              Icons.clear,
+                              size: 19,
+                              color: Colors.black87,
+                            ),
+                          )
+                        : null,
                   ),
                 ),
               ),
             ),
-            titleSpacing: 5,
+            titleSpacing: 0,
             actions: const [
               SizedBox(
                 width: 30,
@@ -73,49 +118,72 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Recent',
-                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                if (searchController.text.isNotEmpty)
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: cubit.recent.length,
-                  reverse: true,
-                  separatorBuilder: (context, state) =>
-                      const SizedBox(height: 0),
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {},
-                      title: Text(cubit.recent[index]),
-                      trailing: IconButton(
-                        splashRadius: 20,
-                        onPressed: () {
-                          cubit.removeSuggestion(index);
-                        },
-                        icon: const Icon(Icons.clear),
-                      ),
-                    );
-                  },
-                ),
-                if (cubit.searchSuggestions.isNotEmpty)
+                if (searchController.text.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Recent',
+                      style:
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                if (state is LoadingGetResultsSearchState ||
+                    state is LoadingGetSearchSuggestionsState)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                    ),
+                  ),
+                if (searchController.text.isEmpty)
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cubit.searchSuggestions.length,
+                    itemCount: cubit.recent.length,
                     reverse: true,
                     separatorBuilder: (context, state) =>
                         const SizedBox(height: 0),
                     itemBuilder: (context, index) {
                       return ListTile(
-                        onTap: () {},
-                        title: Text(cubit.searchSuggestions[index].name!),
+                        onTap: () {
+                          searchController.text = cubit.recent[index];
+                          FocusManager.instance.primaryFocus?.requestFocus(focusNode);
+                          cubit.getSearchSuggestions(
+                              keyWord: cubit.recent[index]);
+                          //cubit.selectKeywordOfSearch();
+                        },
+                        title: Text(cubit.recent[index]),
+                        trailing: IconButton(
+                          splashRadius: 20,
+                          onPressed: () {
+                            cubit.removeSuggestion(index);
+                          },
+                          icon: const Icon(Icons.clear),
+                        ),
                       );
                     },
                   ),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: cubit.searchSuggestions.length,
+                  reverse: true,
+                  separatorBuilder: (context, state) =>
+                      const SizedBox(height: 0),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        searchController.text =
+                            cubit.searchSuggestions[index].name!;
+                        cubit.selectKeywordOfSearch();
+                      },
+                      title: Text(cubit.searchSuggestions[index].name!),
+                    );
+                  },
+                ),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -126,9 +194,23 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   itemBuilder: (context, index) {
                     return InkWell(
+                      onTap: () {
+                        PidoCubit.get(context).getSimilarProducts(
+                          subId: cubit.searchResults[index].subcategoryId!,
+                          pId: cubit.searchResults[index].id!,
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductDetails(
+                                    model: cubit.searchResults[index])));
+                      },
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
                       borderRadius: BorderRadius.circular(12.0),
                       child: Container(
-                        height: 100,
+                        height: 101,
                         padding: const EdgeInsets.all(16.0),
                         margin: const EdgeInsets.symmetric(horizontal: 16.0),
                         decoration: BoxDecoration(
@@ -185,14 +267,21 @@ class _SearchScreenState extends State<SearchScreen> {
                               width: 5,
                             ),
                             const Spacer(),
-                            const CircleAvatar(
+                            const Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: Colors.black87,
+                              size: 30,
+                            ),
+                            /*const CircleAvatar(
                               radius: 20,
                               backgroundColor: Colors.black54,
-                              child:
-                                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.white,),
-                            ),
+                              child: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                color: Colors.white,
+                              ),
+                            ),*/
                             const SizedBox(
-                              width: 30,
+                              width: 10,
                             ),
                           ],
                         ),

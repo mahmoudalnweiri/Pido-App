@@ -15,3 +15,7 @@ class SuccessGetResultsSearchState extends SearchStates{}
 class ErrorGetResultsSearchState extends SearchStates{}
 
 class RemoveSuggestionState extends SearchStates{}
+
+class ClearSearchState extends SearchStates{}
+
+class SelectKeywordOfSearchState extends SearchStates{}
