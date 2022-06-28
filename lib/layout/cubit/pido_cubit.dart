@@ -49,7 +49,6 @@ class PidoCubit extends Cubit<PidoStates> {
 
   int discountPercentage({required int price, required int priceOffer}) {
     double finalPrice = ((price - priceOffer) / price) * 100;
-    emit(ExportDiscountPercentageState());
     return finalPrice.round();
   }
 
@@ -208,6 +207,7 @@ class PidoCubit extends Cubit<PidoStates> {
     required int pId,
   }) {
     emit(LoadingGetSimilarProductsState());
+    similarProducts = [];
     DioHelper.getData(
       url: SIMILAR,
       lang: 'en',

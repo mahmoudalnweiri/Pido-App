@@ -58,46 +58,60 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 5,
                     ),
-                    Align(
+                    /*Align(
                       alignment: AlignmentDirectional.center,
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            )
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.search_outlined,
-                                color: Color.fromRGBO(233, 213, 232, 1),
-                                size: 32,
-                              ),
-                              const SizedBox(width: 20.0),
-                              Text(
-                                'Find Your Product',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .caption!
-                                    .copyWith(fontSize: 14),
+                      child: InkWell(
+                        onTap: (){},
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
                               )
                             ],
                           ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  constraints: const BoxConstraints(minWidth: 40),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: const Color.fromRGBO(233, 213, 232, 1)
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.search_outlined,
+                                      color: Colors.white,
+                                      size: 32,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Text(
+                                  'What are you looking for?',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(fontSize: 14),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ),*/
                     const SizedBox(
                       height: 20,
                     ),

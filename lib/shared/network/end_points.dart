@@ -11,3 +11,7 @@ const String OFFERS = 'public/offers';
 const String PRODUCTS = 'public/products';
 
 const String SIMILAR = 'public/similer';
+
+const String SUGGESTIONS = 'public/searchProductsName';
+
+const String SEARCH_RESULTS = 'public/search';

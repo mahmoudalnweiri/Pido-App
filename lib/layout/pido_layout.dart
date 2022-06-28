@@ -9,6 +9,7 @@ import 'package:pido_app/modules/login/login_screen.dart';
 import 'package:pido_app/modules/new_arrival/new_arrival_screen.dart';
 import 'package:pido_app/modules/offers/offers_screen.dart';
 import 'package:pido_app/modules/orders/my_orders_screen.dart';
+import 'package:pido_app/modules/search/search_screen.dart';
 
 import '../modules/addresses/addresses_screen.dart';
 import '../modules/cart/shopping_cart_screen.dart';
@@ -70,7 +71,9 @@ class PidoLayout extends StatelessWidget {
                   ),
                   actions: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const SearchScreen()));
+                      },
                       icon: const Icon(
                         Icons.search,
                         color: Colors.black,
@@ -237,19 +240,19 @@ class PidoLayout extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(
-                      Icons.location_on_outlined,
+                      Icons.favorite_outline,
                       color: Colors.black,
                       size: 27,
                     ),
                     title: const Text(
-                      'Address',
+                      'Favorites',
                       style: TextStyle(fontSize: 19),
                     ),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const AddressesScreen()));
+                              builder: (_) => const FavoritesScreen()));
                     },
                   ),
                   ListTile(
@@ -271,19 +274,19 @@ class PidoLayout extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(
-                      Icons.favorite_outline,
+                      Icons.location_on_outlined,
                       color: Colors.black,
                       size: 27,
                     ),
                     title: const Text(
-                      'Favorites',
+                      'Address',
                       style: TextStyle(fontSize: 19),
                     ),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const FavoritesScreen()));
+                              builder: (_) => const AddressesScreen()));
                     },
                   ),
                   ListTile(

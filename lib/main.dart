@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pido_app/layout/cubit/pido_cubit.dart';
 import 'package:pido_app/layout/pido_layout.dart';
+import 'package:pido_app/modules/search/cubit/search_cubit.dart';
 import 'package:pido_app/shared/network/local/cache_helper.dart';
 import 'package:pido_app/shared/network/remote/dio_helper.dart';
+
+import 'shared/my_bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +22,14 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  runApp(const MyApp());
+
+  BlocOverrides.runZoned(
+        () {
+      runApp(const MyApp());
+    },
+    blocObserver: MyBlocObserver(),
+  );
+
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +42,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => PidoCubit()..getCategories()..getAllProducts()..getOffers(),
         ),
+        BlocProvider(create: (context)=> SearchCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -212,227 +212,208 @@ class ProductDetails extends StatelessWidget {
                         height: 5,
                       ),
                       SizedBox(
-                        height: state is! LoadingGetSimilarProductsState &&
-                                cubit.similarProducts.isNotEmpty
-                            ? 290
-                            : 100,
-                        child: state is! LoadingGetSimilarProductsState
-                            ? cubit.similarProducts.isNotEmpty
-                                ? ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    physics: const BouncingScrollPhysics(),
-                                    padding: const EdgeInsets.all(10.0),
-                                    itemCount: cubit.similarProducts.length,
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(
-                                      width: 10,
-                                    ),
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          cubit.getSimilarProducts(
-                                              subId: cubit
-                                                  .similarProducts[index]
-                                                  .subcategoryId!,
-                                              pId: cubit
-                                                  .similarProducts[index].id!);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetails(
-                                                          model: cubit
-                                                                  .similarProducts[
+                        height: cubit.similarProducts.isNotEmpty ? 290 : 100,
+                        child: cubit.similarProducts.isNotEmpty
+                            ? ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                padding: const EdgeInsets.all(10.0),
+                                itemCount: cubit.similarProducts.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  width: 10,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      cubit.getSimilarProducts(
+                                          subId: cubit.similarProducts[index]
+                                              .subcategoryId!,
+                                          pId:
+                                              cubit.similarProducts[index].id!);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProductDetails(
+                                                      model:
+                                                          cubit.similarProducts[
                                                               index])));
-                                        },
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                          width: 180,
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.16),
-                                                  blurRadius: 6.0,
-                                                  offset:
-                                                      const Offset(0.0, 3.0),
-                                                )
-                                              ]),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                    },
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: 180,
+                                      padding: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.16),
+                                              blurRadius: 6.0,
+                                              offset: const Offset(0.0, 3.0),
+                                            )
+                                          ]),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Stack(
                                             children: [
-                                              Stack(
-                                                children: [
-                                                  Container(
-                                                    height: 180,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                      image:
-                                                          const DecorationImage(
-                                                        image: NetworkImage(
-                                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                              Container(
+                                                height: 180,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                  image: const DecorationImage(
+                                                    image: NetworkImage(
+                                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                top: 5,
+                                                right: 5,
+                                                child: CircleAvatar(
+                                                  radius: 17,
+                                                  backgroundColor:
+                                                      Colors.black38,
+                                                  child: IconButton(
+                                                    iconSize: 23,
+                                                    onPressed: () {},
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(
+                                                      Icons.favorite,
+                                                      color: index == 0
+                                                          ? Colors.red[600]
+                                                          : Colors.white,
                                                     ),
                                                   ),
-                                                  Positioned(
-                                                    top: 5,
-                                                    right: 5,
-                                                    child: CircleAvatar(
-                                                      radius: 17,
-                                                      backgroundColor:
-                                                          Colors.black38,
-                                                      child: IconButton(
-                                                        iconSize: 23,
-                                                        onPressed: () {},
-                                                        padding:
-                                                            EdgeInsets.zero,
-                                                        icon: Icon(
-                                                          Icons.favorite,
-                                                          color: index == 0
-                                                              ? Colors.red[600]
-                                                              : Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  if (cubit
-                                                          .similarProducts[
-                                                              index]
-                                                          .offerprice !=
-                                                      0)
-                                                    Positioned(
-                                                      top: 3,
-                                                      left: 3,
-                                                      child: CircleAvatar(
-                                                        radius: 20,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(0.0),
-                                                          child: ClipPath(
-                                                            clipper:
-                                                                StarClipper(8),
-                                                            child: Container(
-                                                              color: Colors
-                                                                  .amberAccent,
-                                                              child: Center(
-                                                                child: Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    const CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      radius: 3,
-                                                                    ),
-                                                                    Text(
-                                                                      '${cubit.discountPercentage(price: cubit.similarProducts[index].price!, priceOffer: cubit.similarProducts[index].offerprice!)}%',
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .red,
-                                                                          fontSize:
-                                                                              12,
-                                                                          fontWeight:
-                                                                              FontWeight.w900),
-                                                                    ),
-                                                                    const CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      radius: 3,
-                                                                    ),
-                                                                  ],
+                                                ),
+                                              ),
+                                              if (cubit.similarProducts[index]
+                                                      .offerprice !=
+                                                  0)
+                                                Positioned(
+                                                  top: 3,
+                                                  left: 3,
+                                                  child: CircleAvatar(
+                                                    radius: 20,
+                                                    backgroundColor: Colors.red,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              0.0),
+                                                      child: ClipPath(
+                                                        clipper: StarClipper(8),
+                                                        child: Container(
+                                                          color: Colors
+                                                              .amberAccent,
+                                                          child: Center(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                const CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  radius: 3,
                                                                 ),
-                                                              ),
+                                                                Text(
+                                                                  '${cubit.discountPercentage(price: cubit.similarProducts[index].price!, priceOffer: cubit.similarProducts[index].offerprice!)}%',
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .red,
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w900),
+                                                                ),
+                                                                const CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  radius: 3,
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                cubit.similarProducts[index]
-                                                    .product_translate!.name!,
-                                                style: const TextStyle(
-                                                    fontSize: 17),
-                                              ),
-                                              SizedBox(
-                                                height:
-                                                    cubit.similarProducts[index]
-                                                                .offerprice !=
-                                                            0
-                                                        ? 4.5
-                                                        : 10,
-                                              ),
-                                              if (cubit.similarProducts[index]
-                                                      .offerprice ==
-                                                  0)
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            cubit.similarProducts[index]
+                                                .product_translate!.name!,
+                                            style:
+                                                const TextStyle(fontSize: 17),
+                                          ),
+                                          SizedBox(
+                                            height: cubit.similarProducts[index]
+                                                        .offerprice !=
+                                                    0
+                                                ? 4.5
+                                                : 10,
+                                          ),
+                                          if (cubit.similarProducts[index]
+                                                  .offerprice ==
+                                              0)
+                                            Text(
+                                              '${cubit.similarProducts[index].price!.toDouble()} KWD',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 19),
+                                            ),
+                                          if (cubit.similarProducts[index]
+                                                  .offerprice !=
+                                              0)
+                                            Column(
+                                              children: [
                                                 Text(
                                                   '${cubit.similarProducts[index].price!.toDouble()} KWD',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption!
+                                                      .copyWith(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough),
+                                                ),
+                                                Text(
+                                                  '${cubit.similarProducts[index].offerprice!.toDouble()} KWD',
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 19),
                                                 ),
-                                              if (cubit.similarProducts[index]
-                                                      .offerprice !=
-                                                  0)
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      '${cubit.similarProducts[index].price!.toDouble()} KWD',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption!
-                                                          .copyWith(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough),
-                                                    ),
-                                                    Text(
-                                                      '${cubit.similarProducts[index].offerprice!.toDouble()} KWD',
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 19),
-                                                    ),
-                                                  ],
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : Center(
-                                    child: Text(
-                                      'There are no similar products',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .caption!
-                                          .copyWith(fontSize: 14),
+                                              ],
+                                            ),
+                                        ],
+                                      ),
                                     ),
-                                  )
-                            : const Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+                                  );
+                                },
+                              )
+                            : Center(
+                                child: Text(
+                                  'There are no similar products',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(fontSize: 14),
                                 ),
                               ),
                       ),
