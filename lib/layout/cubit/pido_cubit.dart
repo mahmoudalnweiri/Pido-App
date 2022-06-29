@@ -1,8 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pido_app/layout/cubit/pido_states.dart';
+import 'package:pido_app/models/city_model.dart';
 import 'package:pido_app/shared/network/end_points.dart';
+import 'package:pido_app/shared/network/local/cache_helper.dart';
 import 'package:pido_app/shared/network/remote/dio_helper.dart';
 
+import '../../models/address_model.dart';
 import '../../models/category_model.dart';
 import '../../models/product_model.dart';
 
@@ -60,6 +63,7 @@ class PidoCubit extends Cubit<PidoStates> {
       url: OFFERS,
       lang: 'en',
     ).then((value) {
+      offers = [];
       for (var item in value.data) {
         offers.add(ProductModel.fromJson(item));
       }
@@ -215,7 +219,7 @@ class PidoCubit extends Cubit<PidoStates> {
       pId: pId,
     ).then((value) {
       similarProducts = [];
-      for(var item in value.data){
+      for (var item in value.data) {
         similarProducts.add(ProductModel.fromJson(item));
       }
       print(similarProducts.length);
@@ -223,6 +227,119 @@ class PidoCubit extends Cubit<PidoStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ErrorGetSimilarProductsState());
+    });
+  }
+
+  List<CityModel> cities = [];
+  int? selectedCityId;
+
+  void getCities() {
+    emit(LoadingGetCitiesState());
+    DioHelper.getData(
+      url: CITIES,
+    ).then((value) {
+      cities = [];
+      for (var city in value.data) {
+        cities.add(CityModel.fromJson(city));
+      }
+      emit(SuccessGetCitiesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetCitiesState());
+    });
+  }
+
+  List<AddressModel> addresses = [];
+
+  void getAddresses() {
+    emit(LoadingGetAddressesState());
+    DioHelper.getData(
+      url: GETorSETorDEL,
+      token: CacheHelper.getData(key: 'token'),
+    ).then((value) {
+      addresses = [];
+      for (var address in value.data) {
+        addresses.add(AddressModel.fromJson(address));
+      }
+      emit(SuccessGetAddressesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetAddressesState());
+    });
+  }
+
+  void setAddress({
+    required int cityId,
+    required String area,
+    required String street,
+    required String house,
+    bool isDefault = false,
+  }) {
+    emit(LoadingSetAddressState());
+    DioHelper.postData(
+      url: GETorSETorDEL,
+      token: CacheHelper.getData(key: 'token'),
+      data: {
+        "cityId": cityId,
+        "area": area,
+        "street": street,
+        "house": house,
+        "isdefault": isDefault
+      },
+    ).then((value) {
+      getAddresses();
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorSetAddressState());
+    });
+  }
+
+  AddressModel? addressDeleted;
+
+  void deleteAddress({
+    required int addressId,
+    required int index,
+  }) {
+    addresses.removeAt(index);
+    emit(LoadingDeleteAddressState());
+    DioHelper.deleteData(
+      url: GETorSETorDEL,
+      token: CacheHelper.getData(key: 'token'),
+      addressId: addressId,
+    ).then((value) {
+      getAddresses();
+    }).catchError((error) {
+      print(error.toString());
+      addresses.add(addressDeleted!);
+      emit(ErrorDeleteAddressState());
+    });
+  }
+
+  void editAddress({
+    required int addressId,
+    required int cityId,
+    required String area,
+    required String street,
+    required String house,
+    bool isDefault = false,
+  }) {
+    emit(LoadingEditAddressState());
+    DioHelper.editData(
+      url: EDIT_ADDRESS,
+      data: {
+        "id": addressId,
+        "cityId": cityId,
+        "area": area,
+        "street": street,
+        "house": house,
+        "isdefault": isDefault
+      },
+      token: CacheHelper.getData(key: 'token'),
+    ).then((value) {
+      getAddresses();
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorEditAddressState());
     });
   }
 }

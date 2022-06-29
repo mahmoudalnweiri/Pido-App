@@ -5,14 +5,17 @@ import 'package:pido_app/layout/cubit/pido_states.dart';
 
 import '../../../shared/components/widgets.dart';
 
-class NewAddressScreen extends StatefulWidget {
-  const NewAddressScreen({Key? key}) : super(key: key);
+class EditAddressScreen extends StatefulWidget {
+  EditAddressScreen({Key? key, this.addressId, this.index}) : super(key: key);
+
+  final int? addressId;
+  final int? index;
 
   @override
-  State<NewAddressScreen> createState() => _NewAddressScreenState();
+  State<EditAddressScreen> createState() => _EditAddressScreenState();
 }
 
-class _NewAddressScreenState extends State<NewAddressScreen> {
+class _EditAddressScreenState extends State<EditAddressScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController cityController;
   late TextEditingController areaController;
@@ -26,6 +29,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
     areaController = TextEditingController();
     streetController = TextEditingController();
     houseController = TextEditingController();
+
+    // Insert the values that was before edit
+    areaController.text = PidoCubit.get(context).addresses[widget.index!].area!;
+    streetController.text = PidoCubit.get(context).addresses[widget.index!].street!;
+    houseController.text = PidoCubit.get(context).addresses[widget.index!].house!;
   }
 
   @override
@@ -46,9 +54,9 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              'New Address',
-              style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold),
+              'Edit Address',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
             leading: IconButton(
               onPressed: (){
@@ -58,9 +66,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
               icon: const Icon(Icons.arrow_back_outlined),
             ),
             iconTheme: const IconThemeData(color: Colors.black),
-            backgroundColor: Theme
-                .of(context)
-                .scaffoldBackgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
           ),
           body: SafeArea(
@@ -108,15 +114,15 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                         bottom: 20,
                                         left: 20),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           height: 4,
                                           width: 40,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(50.0),
+                                                BorderRadius.circular(50.0),
                                             color: Colors.black45,
                                           ),
                                         ),
@@ -124,7 +130,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                           height: 20,
                                         ),
                                         const Text(
-                                          'Default Address',
+                                          'Select City',
                                           style: TextStyle(
                                               fontSize: 21,
                                               fontWeight: FontWeight.bold),
@@ -140,13 +146,13 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                                               return ListTile(
                                                 onTap: () {
                                                   cityController.text =
-                                                  cubit.cities[index].name!;
+                                                      cubit.cities[index].name!;
                                                   cubit.selectedCityId =
                                                       cubit.cities[index].id;
                                                   Navigator.pop(context);
                                                 },
-                                                title: Text(cubit.cities[index]
-                                                    .name!, style: const TextStyle(fontWeight: FontWeight.w500,),),
+                                                title: Text(
+                                                    cubit.cities[index].name!, style: const TextStyle(fontWeight: FontWeight.w500),),
                                               );
                                             },
                                           ),
@@ -170,8 +176,10 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'City',
-                              suffixIcon: Icon(Icons.arrow_drop_down_outlined,
-                                color: Colors.black87,),
+                              suffixIcon: Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: Colors.black87,
+                              ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 16.0),
                             ),
@@ -300,10 +308,12 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                         onPressed: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (_formKey.currentState!.validate()) {
-                            cubit.setAddress(cityId: cubit.selectedCityId!,
-                                area: areaController.text,
-                                street: streetController.text,
-                                house: houseController.text,
+                            cubit.editAddress(
+                              addressId: widget.addressId!,
+                              cityId: cubit.selectedCityId!,
+                              area: areaController.text,
+                              street: streetController.text,
+                              house: houseController.text,
                             );
                           }
                         },

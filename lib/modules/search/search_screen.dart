@@ -98,6 +98,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
+            leading: IconButton(
+              onPressed: (){
+                cubit.clearSearch();
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_outlined),
+            ),
             titleSpacing: 0,
             actions: const [
               SizedBox(

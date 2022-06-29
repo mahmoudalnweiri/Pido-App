@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             if (state.model.username != null) {
-              CacheHelper.setData(key: 'token', value: state.model.id)
+              CacheHelper.setData(key: 'token', value: state.model.accessToken)
                   .then((value) {
                 if (value) {
                   Navigator.pushReplacement(context,

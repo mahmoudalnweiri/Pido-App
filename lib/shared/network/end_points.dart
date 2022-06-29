@@ -15,3 +15,9 @@ const String SIMILAR = 'public/similer';
 const String SUGGESTIONS = 'public/searchProductsName';
 
 const String SEARCH_RESULTS = 'public/search';
+
+const String GETorSETorDEL = 'userdata/addresses';
+
+const String EDIT_ADDRESS = 'userdata/address';
+
+const String CITIES = 'public/cities';

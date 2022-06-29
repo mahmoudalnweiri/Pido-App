@@ -77,3 +77,33 @@ class LoadingGetSimilarProductsState extends PidoStates{}
 class SuccessGetSimilarProductsState extends PidoStates{}
 
 class ErrorGetSimilarProductsState extends PidoStates{}
+
+class LoadingGetCitiesState extends PidoStates{}
+
+class SuccessGetCitiesState extends PidoStates{}
+
+class ErrorGetCitiesState extends PidoStates{}
+
+class LoadingGetAddressesState extends PidoStates{}
+
+class SuccessGetAddressesState extends PidoStates{}
+
+class ErrorGetAddressesState extends PidoStates{}
+
+class LoadingSetAddressState extends PidoStates{}
+
+class SuccessSetAddressState extends PidoStates{}
+
+class ErrorSetAddressState extends PidoStates{}
+
+class LoadingDeleteAddressState extends PidoStates{}
+
+class SuccessDeleteAddressState extends PidoStates{}
+
+class ErrorDeleteAddressState extends PidoStates{}
+
+class LoadingEditAddressState extends PidoStates{}
+
+class SuccessEditAddressState extends PidoStates{}
+
+class ErrorEditAddressState extends PidoStates{}

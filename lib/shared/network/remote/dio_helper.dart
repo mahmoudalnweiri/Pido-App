@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 
 class DioHelper {
@@ -48,4 +46,37 @@ class DioHelper {
 
     return await dio!.post(url, queryParameters: query, data: data);
   }
+
+  static Future<Response> deleteData({
+    required String url,
+    required String token,
+    required int addressId,
+  }) async {
+    return await dio!.delete(
+      url,
+      options: Options(
+        headers: {
+          'x-access-token': token,
+          'id': addressId,
+        },
+      ),
+    );
+  }
+
+  static Future<Response> editData({
+    required String url,
+    required Map<String, dynamic> data,
+    required String token,
+  }) async {
+    return await dio!.put(
+      url,
+      data: data,
+      options: Options(
+        headers: {
+          'x-access-token': token,
+        },
+      ),
+    );
+  }
+
 }

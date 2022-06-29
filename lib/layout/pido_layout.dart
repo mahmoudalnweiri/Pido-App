@@ -283,6 +283,7 @@ class PidoLayout extends StatelessWidget {
                       style: TextStyle(fontSize: 19),
                     ),
                     onTap: () {
+                      cubit.getAddresses();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
