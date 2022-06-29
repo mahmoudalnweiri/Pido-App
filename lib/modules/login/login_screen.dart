@@ -48,8 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
               CacheHelper.setData(key: 'token', value: state.model.accessToken)
                   .then((value) {
                 if (value) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => PidoLayout()));
+                  CacheHelper.setData(key: 'dateEntry', value: DateTime.now().toString()).then((value){
+                    if(value){
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => PidoLayout()));
+                    }
+                  });
                 }
               });
             }

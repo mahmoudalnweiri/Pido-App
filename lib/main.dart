@@ -23,13 +23,22 @@ void main() async {
     ),
   );
 
+  if (DateTime.now().isAtSameMomentAs(
+          DateTime.parse(CacheHelper.getData(key: 'dateEntry'))
+              .add(const Duration(hours: 24))) ||
+      DateTime.now().isAfter(
+          DateTime.parse(CacheHelper.getData(key: 'dateEntry'))
+              .add(const Duration(hours: 24)))) {
+    CacheHelper.removeData(key: 'token');
+    CacheHelper.removeData(key: 'dateEntry');
+  }
+
   BlocOverrides.runZoned(
-        () {
+    () {
       runApp(const MyApp());
     },
     blocObserver: MyBlocObserver(),
   );
-
 }
 
 class MyApp extends StatelessWidget {
@@ -40,9 +49,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => PidoCubit()..getCategories()..getAllProducts()..getOffers(),
+          create: (context) => PidoCubit()
+            ..getCategories()
+            ..getAllProducts()
+            ..getOffers(),
         ),
-        BlocProvider(create: (context)=> SearchCubit()),
+        BlocProvider(create: (context) => SearchCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

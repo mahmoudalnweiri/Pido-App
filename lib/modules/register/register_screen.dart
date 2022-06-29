@@ -58,8 +58,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       key: 'token', value: state.model.user!.accessToken)
                   .then((value) {
                 if (value) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => PidoLayout()));
+                  CacheHelper.setData(key: 'dateEntry', value: DateTime.now().toString()).then((value){
+                    if(value){
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => PidoLayout()));
+                    }
+                  });
                 }
               });
             }
