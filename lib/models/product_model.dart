@@ -31,39 +31,20 @@ class ProductModel{
 }
 
 class ProductTranslate{
-  int? id;
-  String? language;
   String? name;
   String? description;
-  String? createdAt;
-  String? updatedAt;
-  int? productId;
 
   ProductTranslate.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    language = json['language'];
     name = json['name'];
     description = json['description'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    productId = json['productId'];
   }
 }
 
 class ProductImage{
-  int? id;
   String? name;
-  int? ismain;
-  String? createdAt;
-  String? updatedAt;
-  int? productId;
 
   ProductImage.fromJson(Map<String, dynamic> json){
-    id = json['id'];
     name = json['name'];
-    ismain = json['ismain'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    productId = json['productId'];
+
   }
 }

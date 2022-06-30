@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pido_app/layout/cubit/pido_states.dart';
 import 'package:pido_app/models/city_model.dart';
+import 'package:pido_app/models/favorite_model.dart';
 import 'package:pido_app/shared/network/end_points.dart';
 import 'package:pido_app/shared/network/local/cache_helper.dart';
 import 'package:pido_app/shared/network/remote/dio_helper.dart';
@@ -222,7 +223,6 @@ class PidoCubit extends Cubit<PidoStates> {
       for (var item in value.data) {
         similarProducts.add(ProductModel.fromJson(item));
       }
-      print(similarProducts.length);
       emit(SuccessGetSimilarProductsState());
     }).catchError((error) {
       print(error.toString());
@@ -340,6 +340,19 @@ class PidoCubit extends Cubit<PidoStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ErrorEditAddressState());
+    });
+  }
+
+  FavoriteModel? favoriteModel;
+
+  void getFavorites() {
+    DioHelper.getData(
+      url: GETorSETorDEL_FAV,
+      token: CacheHelper.getData(key: 'token'),
+    ).then((value) {
+      favoriteModel = FavoriteModel.fromJson(value.data);
+    }).catchError((error) {
+      print(error.toString());
     });
   }
 }

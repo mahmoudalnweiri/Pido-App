@@ -23,14 +23,16 @@ void main() async {
     ),
   );
 
-  if (DateTime.now().isAtSameMomentAs(
-          DateTime.parse(CacheHelper.getData(key: 'dateEntry'))
-              .add(const Duration(hours: 24))) ||
-      DateTime.now().isAfter(
-          DateTime.parse(CacheHelper.getData(key: 'dateEntry'))
-              .add(const Duration(hours: 24)))) {
-    CacheHelper.removeData(key: 'token');
-    CacheHelper.removeData(key: 'dateEntry');
+  if(CacheHelper.getData(key: 'token') != null && CacheHelper.getData(key: 'dateEntry') != null){
+    if (DateTime.now().isAtSameMomentAs(
+        DateTime.parse(CacheHelper.getData(key: 'dateEntry'))
+            .add(const Duration(hours: 24))) ||
+        DateTime.now().isAfter(
+            DateTime.parse(CacheHelper.getData(key: 'dateEntry'))
+                .add(const Duration(hours: 24)))) {
+      CacheHelper.removeData(key: 'token');
+      CacheHelper.removeData(key: 'dateEntry');
+    }
   }
 
   BlocOverrides.runZoned(
@@ -52,7 +54,8 @@ class MyApp extends StatelessWidget {
           create: (context) => PidoCubit()
             ..getCategories()
             ..getAllProducts()
-            ..getOffers(),
+            ..getOffers()
+            ..getFavorites(),
         ),
         BlocProvider(create: (context) => SearchCubit()),
       ],

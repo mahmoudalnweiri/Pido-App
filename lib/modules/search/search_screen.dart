@@ -239,10 +239,12 @@ class _SearchScreenState extends State<SearchScreen> {
                               width: 70,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.0),
-                                image: const DecorationImage(
+                                image: DecorationImage(
                                     image: NetworkImage(
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
-                                    fit: BoxFit.fill),
+                                      cubit.searchResults[index].product_image!.name!,
+                                    ),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -279,14 +281,6 @@ class _SearchScreenState extends State<SearchScreen> {
                               color: Colors.black87,
                               size: 30,
                             ),
-                            /*const CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.black54,
-                              child: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: Colors.white,
-                              ),
-                            ),*/
                             const SizedBox(
                               width: 10,
                             ),

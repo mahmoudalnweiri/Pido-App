@@ -21,3 +21,5 @@ const String GETorSETorDEL = 'userdata/addresses';
 const String EDIT_ADDRESS = 'userdata/address';
 
 const String CITIES = 'public/cities';
+
+const String GETorSETorDEL_FAV = 'userdata/favorite';

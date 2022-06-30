@@ -150,16 +150,16 @@ class CategoryScreen extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(15.0),
-                                              image: const DecorationImage(
+                                              image: DecorationImage(
                                                 image: NetworkImage(
-                                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
-                                                fit: BoxFit.cover,
+                                                    cubit.categoryProducts[title]![index].product_image!.name!),
+                                                fit: BoxFit.fill,
                                               ),
                                             ),
                                           ),
                                           Positioned(
-                                            top: 5,
-                                            right: 5,
+                                            top: 3,
+                                            right: 0,
                                             child: CircleAvatar(
                                               radius: 17,
                                               backgroundColor: Colors.black38,
@@ -180,8 +180,8 @@ class CategoryScreen extends StatelessWidget {
                                                   .offerprice! >
                                               0)
                                             Positioned(
-                                              top: 3,
-                                              left: 3,
+                                              top: 0,
+                                              left: 0,
                                               child: CircleAvatar(
                                                 radius: 20,
                                                 backgroundColor: Colors.red,

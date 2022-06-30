@@ -44,7 +44,6 @@ class ProductDetails extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(16.0),
                         margin: const EdgeInsets.all(16.0),
-                        height: 490,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
@@ -60,47 +59,14 @@ class ProductDetails extends StatelessWidget {
                         child: Column(
                           children: [
                             Container(
-                              height: 330,
+                              height: 350,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.0),
-                                image: const DecorationImage(
+                                image: DecorationImage(
                                   image: NetworkImage(
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
-                                  fit: BoxFit.cover,
+                                      model!.product_image!.name!),
+                                  fit: BoxFit.fill,
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              height: 100,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: 5,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                  width: 10,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {},
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    child: Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        image: const DecorationImage(
-                                          image: NetworkImage(
-                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
                               ),
                             ),
                           ],
@@ -268,16 +234,16 @@ class ProductDetails extends StatelessWidget {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
-                                                  image: const DecorationImage(
+                                                  image: DecorationImage(
                                                     image: NetworkImage(
-                                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ6gpQYviTbMVn_fjcDMwseb-4vLTIjUTIrA&usqp=CAU'),
-                                                    fit: BoxFit.cover,
+                                                        cubit.similarProducts[index].product_image!.name!),
+                                                    fit: BoxFit.fill
                                                   ),
                                                 ),
                                               ),
                                               Positioned(
-                                                top: 5,
-                                                right: 5,
+                                                top: 3,
+                                                right: 0,
                                                 child: CircleAvatar(
                                                   radius: 17,
                                                   backgroundColor:
@@ -299,8 +265,8 @@ class ProductDetails extends StatelessWidget {
                                                       .offerprice !=
                                                   0)
                                                 Positioned(
-                                                  top: 3,
-                                                  left: 3,
+                                                  top: 0,
+                                                  left: 0,
                                                   child: CircleAvatar(
                                                     radius: 20,
                                                     backgroundColor: Colors.red,
