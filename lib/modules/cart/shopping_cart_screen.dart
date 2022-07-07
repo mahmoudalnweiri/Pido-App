@@ -308,7 +308,7 @@ class _CartShoppingScreenState extends State<ShoppingCartScreen> {
                             ],
                           ),
                         ),
-                        if (cubit.promoCode != null)
+                        if (cubit.promoCode != null || state is LoadingSendPromoCodeState)
                           const SizedBox(
                             height: 8,
                           ),
