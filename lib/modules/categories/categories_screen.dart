@@ -20,7 +20,11 @@ class CategoryScreen extends StatelessWidget {
         var cubit = PidoCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text('$title Products', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+            title: Text(
+              '$title Products',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
             leading: IconButton(
               onPressed: () async {
                 Navigator.pop(context);
@@ -33,8 +37,10 @@ class CategoryScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
             systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Theme.of(context).scaffoldBackgroundColor, statusBarBrightness: Brightness.dark,
-              statusBarIconBrightness: Brightness.dark,),
+              statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+              statusBarBrightness: Brightness.dark,
+              statusBarIconBrightness: Brightness.dark,
+            ),
           ),
           body: SafeArea(
             child: cubit.categoryProducts[title]!.isNotEmpty
@@ -151,8 +157,11 @@ class CategoryScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(15.0),
                                               image: DecorationImage(
-                                                image: NetworkImage(
-                                                    cubit.categoryProducts[title]![index].product_image!.name!),
+                                                image: NetworkImage(cubit
+                                                    .categoryProducts[title]![
+                                                        index]
+                                                    .product_image!
+                                                    .name!),
                                                 fit: BoxFit.fill,
                                               ),
                                             ),
@@ -288,7 +297,13 @@ class CategoryScreen extends StatelessWidget {
                                             : 2,
                                       ),
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          cubit.addProductToCart(
+                                              pId: cubit
+                                                  .categoryProducts[title]![
+                                                      index]
+                                                  .id!);
+                                        },
                                         style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(

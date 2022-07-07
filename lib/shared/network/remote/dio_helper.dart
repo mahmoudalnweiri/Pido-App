@@ -50,14 +50,16 @@ class DioHelper {
   static Future<Response> deleteData({
     required String url,
     required String token,
-    required int addressId,
+    int? addressId,
+    int? productId,
   }) async {
     return await dio!.delete(
       url,
       options: Options(
         headers: {
           'x-access-token': token,
-          'id': addressId,
+          'id': addressId ?? '',
+          'productId': productId ?? ''
         },
       ),
     );

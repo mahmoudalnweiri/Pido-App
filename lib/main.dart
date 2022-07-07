@@ -54,8 +54,7 @@ class MyApp extends StatelessWidget {
           create: (context) => PidoCubit()
             ..getCategories()
             ..getAllProducts()
-            ..getOffers()
-            ..getFavorites(),
+            ..getOffers(),
         ),
         BlocProvider(create: (context) => SearchCubit()),
       ],

@@ -31,13 +31,7 @@ InkWell buildProductItem({
             begin: AlignmentDirectional.bottomCenter,
             end: AlignmentDirectional.topCenter,
           ),
-          /*boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.16),
-              blurRadius: 6.0,
-              offset: const Offset(0.0, 3.0),
-            )
-          ]*/),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -149,7 +143,9 @@ InkWell buildProductItem({
             height: model.offerprice == 0 ? 10 : 2,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              cubit.addProductToCart(pId: model.id!);
+            },
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                     const Color.fromRGBO(244, 236, 207, 1)),

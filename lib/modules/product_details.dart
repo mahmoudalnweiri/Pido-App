@@ -24,6 +24,10 @@ class ProductDetails extends StatelessWidget {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
+            leading: IconButton(onPressed: (){
+              Navigator.pop(context);
+              cubit.countProduct = 1;
+            }, icon: const Icon(Icons.arrow_back_outlined)),
             iconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
@@ -420,19 +424,23 @@ class ProductDetails extends StatelessWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      cubit.reduceCount();
+                                    },
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     splashColor: Colors.transparent,
                                     icon: const Icon(Icons.remove),
                                   ),
-                                  const Text(
-                                    '0',
-                                    style: TextStyle(fontSize: 21),
+                                  Text(
+                                    '${cubit.countProduct}',
+                                    style: const TextStyle(fontSize: 21),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      cubit.increaseCount();
+                                    },
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
@@ -450,7 +458,9 @@ class ProductDetails extends StatelessWidget {
                             child: SizedBox(
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  cubit.addProductToCart(pId: model!.id!, countProduct: cubit.countProduct);
+                                },
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(

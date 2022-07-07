@@ -7,6 +7,7 @@ import 'package:pido_app/shared/network/local/cache_helper.dart';
 import 'package:pido_app/shared/network/remote/dio_helper.dart';
 
 import '../../models/address_model.dart';
+import '../../models/cart_product_model.dart';
 import '../../models/category_model.dart';
 import '../../models/product_model.dart';
 
@@ -354,5 +355,78 @@ class PidoCubit extends Cubit<PidoStates> {
     }).catchError((error) {
       print(error.toString());
     });
+  }
+
+  List<int> cartProductsId = [];
+  int countProduct = 1;
+
+  void addProductToCart({required int pId, int countProduct = 1}) {
+    if (cartProductsId.any((element) => element == pId)) {
+      emit(ErrorAddProductToCartState());
+    } else {
+      cartProductsId.add(pId);
+      emit(LoadingAddProductToCartState());
+      DioHelper.postData(
+        url: SETorDELorEDIT_CART,
+        token: CacheHelper.getData(key: 'token'),
+        data: {
+          'productId': pId,
+          'count': countProduct,
+        },
+      ).then((value) {
+        emit(SuccessAddProductToCartState());
+      }).catchError((error) {
+        cartProductsId.remove(pId);
+        print(error.toString());
+      });
+    }
+  }
+
+  void deleteProductFromCart({required int pId}) {
+    cartProductsId.remove(pId);
+    emit(LoadingDeleteProductFromCartState());
+    DioHelper.deleteData(
+      url: SETorDELorEDIT_CART,
+      token: CacheHelper.getData(key: 'token'),
+      productId: pId,
+    ).then((value) {
+      cartProductsId.remove(pId);
+      getCartProducts();
+    }).catchError((error) {
+      cartProductsId.add(pId);
+      print(error.toString());
+      emit(ErrorDeleteProductFromCartState());
+    });
+  }
+
+  List<CartProductModel> cartProducts = [];
+
+  void getCartProducts() {
+    emit(LoadingGetCartProductsState());
+    DioHelper.getData(
+      url: GET_CART_PRODUCTS,
+      token: CacheHelper.getData(key: 'token'),
+    ).then((value) {
+      cartProducts = [];
+      for(var item in value.data){
+        cartProducts.add(CartProductModel.fromJson(item));
+      }
+      emit(SuccessGetCartProductsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetCartProductsState());
+    });
+  }
+
+  void increaseCount() {
+    countProduct += 1;
+    emit(IncreaseCountState());
+  }
+
+  void reduceCount() {
+    if (countProduct > 1) {
+      countProduct -= 1;
+      emit(ReduceCountState());
+    }
   }
 }

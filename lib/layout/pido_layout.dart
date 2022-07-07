@@ -10,6 +10,7 @@ import 'package:pido_app/modules/new_arrival/new_arrival_screen.dart';
 import 'package:pido_app/modules/offers/offers_screen.dart';
 import 'package:pido_app/modules/orders/my_orders_screen.dart';
 import 'package:pido_app/modules/search/search_screen.dart';
+import 'package:pido_app/shared/network/local/cache_helper.dart';
 
 import '../modules/addresses/addresses_screen.dart';
 import '../modules/cart/shopping_cart_screen.dart';
@@ -81,15 +82,17 @@ class PidoLayout extends StatelessWidget {
                     ),
                     Badge(
                       position: BadgePosition.topEnd(top: 5, end: 5),
+                      showBadge: cubit.cartProductsId.isEmpty ? false : true,
                       badgeContent: Text(
-                        '3',
+                        '${cubit.cartProductsId.length}',
                         style:
                             const TextStyle(color: Colors.white, fontSize: 12),
                       ),
-                      padding: EdgeInsets.all(3 >= 10 ? 3 : 5),
+                      padding: EdgeInsets.all(cubit.cartProductsId.length >= 10 ? 3 : 5),
                       badgeColor: Colors.red[600]!,
                       child: IconButton(
                         onPressed: () {
+                          cubit.getCartProducts();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -238,7 +241,8 @@ class PidoLayout extends StatelessWidget {
                               builder: (_) => const NewArrivalScreen()));
                     },
                   ),
-                  ListTile(
+                  if(CacheHelper.getData(key: 'token') != null)
+                    ListTile(
                     leading: const Icon(
                       Icons.favorite_outline,
                       color: Colors.black,
@@ -249,13 +253,15 @@ class PidoLayout extends StatelessWidget {
                       style: TextStyle(fontSize: 19),
                     ),
                     onTap: () {
+                      cubit.getFavorites();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (_) => const FavoritesScreen()));
                     },
                   ),
-                  ListTile(
+                  if(CacheHelper.getData(key: 'token') != null)
+                    ListTile(
                     leading: const Icon(
                       Icons.shopping_bag_outlined,
                       color: Colors.black,
@@ -272,6 +278,7 @@ class PidoLayout extends StatelessWidget {
                               builder: (_) => const MyOrdersScreen()));
                     },
                   ),
+                  if(CacheHelper.getData(key: 'token') != null)
                   ListTile(
                     leading: const Icon(
                       Icons.location_on_outlined,

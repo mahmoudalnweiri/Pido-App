@@ -145,7 +145,7 @@ class OffersScreen extends StatelessWidget {
                           cubit.offers[index].product_translate!.name!,
                           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4.5,
                         ),
                         Column(
@@ -164,11 +164,13 @@ class OffersScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            cubit.addProductToCart(pId: cubit.offers[index].id!);
+                          },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
                                   const Color.fromRGBO(244, 236, 207, 1)),

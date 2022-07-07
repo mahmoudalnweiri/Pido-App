@@ -23,3 +23,7 @@ const String EDIT_ADDRESS = 'userdata/address';
 const String CITIES = 'public/cities';
 
 const String GETorSETorDEL_FAV = 'userdata/favorite';
+
+const String SETorDELorEDIT_CART = 'userdata/chart';
+
+const String GET_CART_PRODUCTS = 'userdata/charts';

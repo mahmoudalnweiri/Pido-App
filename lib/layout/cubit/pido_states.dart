@@ -107,3 +107,25 @@ class LoadingEditAddressState extends PidoStates{}
 class SuccessEditAddressState extends PidoStates{}
 
 class ErrorEditAddressState extends PidoStates{}
+
+class LoadingAddProductToCartState extends PidoStates{}
+
+class SuccessAddProductToCartState extends PidoStates{}
+
+class ErrorAddProductToCartState extends PidoStates{}
+
+class LoadingDeleteProductFromCartState extends PidoStates{}
+
+class SuccessDeleteProductFromCartState extends PidoStates{}
+
+class ErrorDeleteProductFromCartState extends PidoStates{}
+
+class IncreaseCountState extends PidoStates{}
+
+class ReduceCountState extends PidoStates{}
+
+class LoadingGetCartProductsState extends PidoStates{}
+
+class SuccessGetCartProductsState extends PidoStates{}
+
+class ErrorGetCartProductsState extends PidoStates{}
