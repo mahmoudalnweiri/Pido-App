@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pido_app/layout/cubit/pido_states.dart';
 import 'package:pido_app/models/city_model.dart';
 import 'package:pido_app/models/favorite_model.dart';
+import 'package:pido_app/models/promo_code_model.dart';
 import 'package:pido_app/shared/network/end_points.dart';
 import 'package:pido_app/shared/network/local/cache_helper.dart';
 import 'package:pido_app/shared/network/remote/dio_helper.dart';
@@ -408,7 +409,7 @@ class PidoCubit extends Cubit<PidoStates> {
       token: CacheHelper.getData(key: 'token'),
     ).then((value) {
       cartProducts = [];
-      for(var item in value.data){
+      for (var item in value.data) {
         cartProducts.add(CartProductModel.fromJson(item));
       }
       emit(SuccessGetCartProductsState());
@@ -428,5 +429,23 @@ class PidoCubit extends Cubit<PidoStates> {
       countProduct -= 1;
       emit(ReduceCountState());
     }
+  }
+
+  PromoCodeModel? promoCode;
+
+  void sendPromoCode({required String code}) {
+    emit(LoadingSendPromoCodeState());
+    DioHelper.postData(
+      url: PROMO_CODE,
+      data: {
+        'code': code,
+      },
+    ).then((value) {
+      promoCode = PromoCodeModel.fromJson(value.data);
+      emit(SuccessSendPromoCodeState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorSendPromoCodeState());
+    });
   }
 }

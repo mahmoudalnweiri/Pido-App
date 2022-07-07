@@ -129,3 +129,9 @@ class LoadingGetCartProductsState extends PidoStates{}
 class SuccessGetCartProductsState extends PidoStates{}
 
 class ErrorGetCartProductsState extends PidoStates{}
+
+class LoadingSendPromoCodeState extends PidoStates{}
+
+class SuccessSendPromoCodeState extends PidoStates{}
+
+class ErrorSendPromoCodeState extends PidoStates{}

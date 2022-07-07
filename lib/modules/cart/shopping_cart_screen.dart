@@ -41,6 +41,12 @@ class _CartShoppingScreenState extends State<ShoppingCartScreen> {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  cubit.promoCode = null;
+                },
+                icon: const Icon(Icons.arrow_back_outlined)),
             iconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
@@ -292,13 +298,74 @@ class _CartShoppingScreenState extends State<ShoppingCartScreen> {
                                     foregroundColor:
                                         MaterialStateProperty.all(Colors.black),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    cubit.sendPromoCode(
+                                        code: discountController.text);
+                                  },
                                   child: const Text('Add'),
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        if (cubit.promoCode != null)
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        if (state is LoadingSendPromoCodeState)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              'Checking...',
+                              style: TextStyle(color: Colors.yellow[800]),
+                            ),
+                          ),
+                        if (cubit.promoCode != null &&
+                            cubit.promoCode!.percent! > 0 && state is!LoadingSendPromoCodeState)
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outline_outlined,
+                                  color: Colors.green[600],
+                                  size: 17,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  'Valid Code',
+                                  style: TextStyle(
+                                      color: Colors.green[600], fontSize: 12),
+                                )
+                              ],
+                            ),
+                          ),
+                        if (cubit.promoCode != null &&
+                            cubit.promoCode!.percent! == 0 && state is!LoadingSendPromoCodeState)
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.cancel_outlined,
+                                  color: Colors.red[400],
+                                  size: 17,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  'Invalid Code',
+                                  style: TextStyle(
+                                      color: Colors.red[600], fontSize: 12),
+                                )
+                              ],
+                            ),
+                          ),
                         const SizedBox(
                           height: 45,
                         ),

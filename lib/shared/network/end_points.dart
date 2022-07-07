@@ -27,3 +27,5 @@ const String GETorSETorDEL_FAV = 'userdata/favorite';
 const String SETorDELorEDIT_CART = 'userdata/chart';
 
 const String GET_CART_PRODUCTS = 'userdata/charts';
+
+const String PROMO_CODE = 'public/promo';
